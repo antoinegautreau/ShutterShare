@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -24,6 +25,7 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -35,6 +37,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
@@ -48,8 +51,24 @@ class MainActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().getReference("Test")
         storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
+
         //setContentView(R.layout.activity_main)
         setContentView(viewBinding.root)
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.selectedItemId = R.id.bottom_home
+        bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId){
+               R.id.bottom_home -> true
+               R.id.bottom_album -> {
+                   startActivity(Intent(this@MainActivity, AlbumActivity::class.java))
+                   overridePendingTransition(0,0)
+                   finish() // Not really sure what this does...
+                   true
+               }
+               else -> false
+            }
+        }
 
         // Checking if permissions were granted in a previous session
         if(!hasPermissions(baseContext)) {
@@ -61,10 +80,10 @@ class MainActivity : AppCompatActivity() {
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
 
-        viewBinding.loginScreenButton.setOnClickListener {
-            val intent = Intent(this, LoginScreen::class.java)
-            startActivity(intent)
-        }
+//        viewBinding.loginScreenButton.setOnClickListener {
+//            val intent = Intent(this, LoginScreen::class.java)
+//            startActivity(intent)
+//        }
 
         //Firebase Test code
         Toast.makeText(this, "Firebase Connection Successful", Toast.LENGTH_SHORT).show()
@@ -75,12 +94,12 @@ class MainActivity : AppCompatActivity() {
         val userName = "jsmith"
 
 
-        val test = Test(firstName, lastName, age, userName)
-        database.child(userName).setValue(test).addOnSuccessListener {
-            Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to Save", Toast.LENGTH_SHORT).show()
-        }
+//        val test = Test(firstName, lastName, age, userName)
+//        database.child(userName).setValue(test).addOnSuccessListener {
+//            Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
+//        }.addOnFailureListener {
+//            Toast.makeText(this, "Failed to Save", Toast.LENGTH_SHORT).show()
+//        }
 
     }
 
