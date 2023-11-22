@@ -30,7 +30,19 @@
         <!--            app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"-->
         <!--            app:layout_constraintLeft_toLeftOf="parent"-->
         <!--            app:layout_constraintRight_toRightOf="parent" />-->
-    </androidx.camera.view.PreviewView>
+        </androidx.camera.view.PreviewView>
+
+    <ImageButton
+        android:id="@+id/flip_camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="45dp"
+        android:layout_toEndOf="@+id/image_capture_button"
+        android:background="@drawable/camera_view_icon_background"
+        android:padding="5dp"
+        android:src="@drawable/baseline_flip_camera_ios_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -47,12 +59,15 @@
         />
 <!--        android:background=""-->
 
-        <Button
+        <ImageButton
             android:id="@+id/event_drop_down_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:src="@drawable/baseline_groups_24"
+            android:background="@drawable/camera_view_icon_background"/>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -73,27 +88,30 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/event_create_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:src="@drawable/baseline_menu_24"
+            android:background="@drawable/camera_view_icon_background"/>
 
         <Button
             android:id="@+id/image_capture_button"
-            android:layout_width="85dp"
+            android:layout_width="75dp"
             android:layout_height="85dp"
             android:layout_marginBottom="85dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:elevation="20dp"
-            android:text="@string/take_photo"
-            app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView" />
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"/>
 
 
-<!--    <Button-->
+    <!--    <Button-->
 <!--        android:id="@+id/login_screen_button"-->
 <!--        android:layout_width="110dp"-->
 <!--        android:layout_height="50dp"-->

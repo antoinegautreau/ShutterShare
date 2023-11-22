@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageProxy
 import com.google.firebase.database.DatabaseReference
@@ -89,8 +90,16 @@ class PicturePreview : AppCompatActivity() {
             val data = baos.toByteArray()
 
             // upload the image (Byte data) to Firebase cloud
-            imageRef.putBytes(data)
-//            var uploadTask = imageRef.putBytes(data)
+//            imageRef.putBytes(data)
+            var uploadTask = imageRef.putBytes(data)
+
+            // TODO Implement some onSuccess and onError kind of handling
+//            if() {
+//                Toast.makeText(this, "Sent!", Toast.LENGTH_LONG).show()
+//            }
+//            else {
+//                Toast.makeText(this, "Could not send.", Toast.LENGTH_LONG).show()
+//            }
 
             finish()
 
