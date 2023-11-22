@@ -1,49 +1,54 @@
 package ca.unb.mobiledev.shuttershare
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.Image
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import android.view.MenuItem
+import android.util.Rational
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.OptIn
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
+import androidx.camera.core.UseCaseGroup
+import androidx.camera.core.ViewPort
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.storage
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var database: DatabaseReference
     private lateinit var storage: StorageReference
+
     private lateinit var cameraController: LifecycleCameraController
+    private lateinit var preview: Preview
+    private lateinit var imageCapture: ImageCapture
+
+    private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+
+    private var sharedPrefs: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +56,12 @@ class MainActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().getReference("Test")
         storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
-
-        //setContentView(R.layout.activity_main)
         setContentView(viewBinding.root)
 
+        // Creating/setting up the SharedPreference file
+        sharedPrefs = getSharedPreferences("ShutterShareData", MODE_PRIVATE)
+
+        // BOTTOM NAVIGATION SETUP
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.bottom_home
         bottomNavigationView.setOnItemSelectedListener {
@@ -70,13 +77,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        // CAMERA PERMISSIONS CHECK
         // Checking if permissions were granted in a previous session
         if(!hasPermissions(baseContext)) {
             // request camera-related permissions
             activityResultLauncher.launch(REQUIRED_PERMISSIONS)
         } else {
-            startCamera()
+            lifecycleScope.launch {
+                startCamera()
+            }
         }
+
+
+        // ACTIVE EVENTS LIST
+        autoCompleteTextView = viewBinding.autoCompleteTextview
+        var adapterItems = ArrayAdapter<String>(this, R.layout.list_item, activeEventsList)
+        autoCompleteTextView.setAdapter(adapterItems)
+
+//        autoCompleteTextView.setOnClickListener {
+//            var item =
+//        }
+
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
 
@@ -86,12 +108,12 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         //Firebase Test code
-        Toast.makeText(this, "Firebase Connection Successful", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "Firebase Connection Successful", Toast.LENGTH_SHORT).show()
 
-        val firstName = "John"
-        val lastName = "Smith"
-        val age = "33"
-        val userName = "jsmith"
+//        val firstName = "John"
+//        val lastName = "Smith"
+//        val age = "33"
+//        val userName = "jsmith"
 
 
 //        val test = Test(firstName, lastName, age, userName)
@@ -103,12 +125,43 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun startCamera() {
+    private suspend fun startCamera() {
         val previewView: PreviewView = viewBinding.viewFinder
-        cameraController = LifecycleCameraController(baseContext)
-        cameraController.bindToLifecycle(this)
-        cameraController.cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA // sets the selfie camera the default
-        previewView.controller = cameraController
+
+        val cameraProvider = ProcessCameraProvider.getInstance(this).await()
+
+        preview = Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_16_9).build()
+        preview.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+
+        imageCapture = ImageCapture.Builder().setTargetAspectRatio(AspectRatio.RATIO_16_9).build()
+
+        val aspectRatio = Rational(previewView.width, previewView.height)
+
+        val viewPort =
+            ViewPort.Builder(aspectRatio, preview.targetRotation).setScaleType(ViewPort.FIT).build()
+
+        val useCaseGroup = UseCaseGroup.Builder()
+            .setViewPort(viewPort)
+            .addUseCase(preview)
+            .addUseCase(imageCapture)
+            .build()
+
+        val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+
+        try {
+            cameraProvider.unbindAll()
+            // Note: we can implement zoom, focus, and flash, but as of right now it doesn't do that
+            var camera = cameraProvider.bindToLifecycle(this, cameraSelector, useCaseGroup)//preview, imageCapture)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "UseCase binding failed", e)
+        }
+
+
+//        cameraController = LifecycleCameraController(baseContext)
+//        cameraController.bindToLifecycle(this)
+//        cameraController.cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA // sets the selfie camera the default
+//        previewView.controller = cameraController
     }
 
     private fun takePhoto() {
@@ -135,7 +188,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up image capture listener, which is triggered after photo has been taken
         // right now when a picture is taken, it uploads to firebase cloud
-        cameraController.takePicture(
+        imageCapture.takePicture(
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageCapturedCallback() {
                 override fun onError(exc: ImageCaptureException) {
@@ -145,45 +198,62 @@ class MainActivity : AppCompatActivity() {
                 override fun  onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
 
-                    // setting the folder location in Firebase
-                    val imageRef = storage.child("test.jpg")
-
                     // grabbing the image from memory and converting it to Byte data
-                    var bitmap: Bitmap = image.convertImageProxyToBitmap()
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                    val data = baos.toByteArray()
+//                    var bitmap: Bitmap = image.convertImageProxyToBitmap()
+//                    val baos = ByteArrayOutputStream()
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//                    val data = baos.toByteArray()
 
-                    var toastText = ""
+                    var intent = Intent(this@MainActivity, PicturePreview::class.java)
 
-                    // upload the image (Byte data) to Firebase cloud
-                    var uploadTask = imageRef.putBytes(data)
-                    uploadTask.addOnFailureListener {
-                        toastText = "Failure to Upload"
-                    }.addOnSuccessListener { taskSnapshot ->
-                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                        toastText = "Successful Upload"
-                    }.addOnCanceledListener {
-                        toastText = "Canceled Upload"
-                    }.addOnCompleteListener {
-                        toastText = "Upload Complete"
-                    }
+                    val extras = ExtendedDataHolder.instance
+                    extras.putExtra("PicturePreviewImage", image)
+                    extras.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
+                    //intent.putExtra("PicturePreviewData", data)
+                    //intent.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
+                    //intent.putExtra("EventSelected", selectedEvent)
+                    // putExtra for picture metadata???
+                    Log.e("AppDebug", "Before start activity")
+                    startActivity(intent)
+                    overridePendingTransition(0,0)
 
-                    Toast.makeText(this@MainActivity, toastText, Toast.LENGTH_SHORT).show()
+                    //image.close()
 
-                    image.close()
+                    // START --------(can probably be moved to PicturePreview Activity)------------------------------------------
+                    // setting the folder location in Firebase
+//                    val imageRef = storage.child("test.jpg")
+//
+//                    var toastText = ""
+//
+//                    // upload the image (Byte data) to Firebase cloud
+//                    var uploadTask = imageRef.putBytes(data)
+//                    uploadTask.addOnFailureListener {
+//                        toastText = "Failure to Upload"
+//                    }.addOnSuccessListener { taskSnapshot ->
+//                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+//                        toastText = "Successful Upload"
+//                    }.addOnCanceledListener {
+//                        toastText = "Canceled Upload"
+//                    }.addOnCompleteListener {
+//                        toastText = "Upload Complete"
+//                    }
+//
+//                    Toast.makeText(this@MainActivity, toastText, Toast.LENGTH_SHORT).show()
+                    // END -------------------------------------------------------
+
+
                 }
             }
         )
     }
 
-    fun ImageProxy.convertImageProxyToBitmap(): Bitmap {
-        val buffer = planes[0].buffer
-        buffer.rewind()
-        val bytes = ByteArray(buffer.capacity())
-        buffer.get(bytes)
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-    }
+//    fun ImageProxy.convertImageProxyToBitmap(): Bitmap {
+//        val buffer = planes[0].buffer
+//        buffer.rewind()
+//        val bytes = ByteArray(buffer.capacity())
+//        buffer.get(bytes)
+//        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+//    }
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
@@ -199,7 +269,9 @@ class MainActivity : AppCompatActivity() {
             if(!permissionGranted) {
                 Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
             } else {
-                startCamera()
+                lifecycleScope.launch {
+                    startCamera()
+                }
             }
         }
 
