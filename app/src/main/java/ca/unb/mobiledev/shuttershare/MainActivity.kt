@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraController: LifecycleCameraController
     private lateinit var preview: Preview
     private lateinit var imageCapture: ImageCapture
+    private var lensFacing: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
     private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
     private lateinit var autoCompleteTextView: AutoCompleteTextView
@@ -102,6 +103,8 @@ class MainActivity : AppCompatActivity() {
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
 
+        viewBinding.flipCameraButton.setOnClickListener { flipCamera() }
+
 //        viewBinding.loginScreenButton.setOnClickListener {
 //            val intent = Intent(this, LoginScreen::class.java)
 //            startActivity(intent)
@@ -146,12 +149,10 @@ class MainActivity : AppCompatActivity() {
             .addUseCase(imageCapture)
             .build()
 
-        val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
-
         try {
             cameraProvider.unbindAll()
             // Note: we can implement zoom, focus, and flash, but as of right now it doesn't do that
-            var camera = cameraProvider.bindToLifecycle(this, cameraSelector, useCaseGroup)//preview, imageCapture)
+            var camera = cameraProvider.bindToLifecycle(this, lensFacing, useCaseGroup)//preview, imageCapture)
 
         } catch (e: Exception) {
             Log.e(TAG, "UseCase binding failed", e)
@@ -162,6 +163,17 @@ class MainActivity : AppCompatActivity() {
 //        cameraController.bindToLifecycle(this)
 //        cameraController.cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA // sets the selfie camera the default
 //        previewView.controller = cameraController
+    }
+
+    private fun flipCamera() {
+        if (lensFacing === CameraSelector.DEFAULT_FRONT_CAMERA)
+            lensFacing = CameraSelector.DEFAULT_BACK_CAMERA
+        else if (lensFacing === CameraSelector.DEFAULT_BACK_CAMERA)
+            lensFacing = CameraSelector.DEFAULT_FRONT_CAMERA
+
+        lifecycleScope.launch {
+            startCamera()
+        }
     }
 
     private fun takePhoto() {
