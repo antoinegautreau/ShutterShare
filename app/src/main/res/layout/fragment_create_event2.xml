@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JoinEventFragment">
+
+    <TextView
+        android:id="@+id/EventNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:text="Event Name"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="107dp"
+        android:layout_marginEnd="11dp"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@+id/EventNameText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/StartDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="26dp"
+        android:text="Start Date"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EventNameText" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="datetime"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/StartDateText"
+        app:layout_constraintEnd_toEndOf="@+id/editText"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="@+id/editText" />
+
+    <TextView
+        android:id="@+id/EndDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="34dp"
+        android:text="End Date"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StartDateText" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="datetime"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/EndDateText"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="@+id/editText2" />
+
+    <ImageButton
+        android:id="@+id/startDateCalendarBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_calendar_month_24"
+        app:layout_constraintBottom_toBottomOf="@+id/editText2"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintTop_toTopOf="@+id/editText2" />
+
+    <ImageButton
+        android:id="@+id/endDateCalendarBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_calendar_month_24"
+        app:layout_constraintBottom_toBottomOf="@+id/editText3"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintTop_toTopOf="@+id/editText3" />
+
+    <TextView
+        android:id="@+id/StartTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="34dp"
+        android:text="Start Time"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EndDateText" />
+
+    <EditText
+        android:id="@+id/StartTimeEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="datetime"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/StartTimeText"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editText3" />
+
+    <ImageButton
+        android:id="@+id/StartTimePickerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_access_time_24"
+        app:layout_constraintBottom_toBottomOf="@+id/StartTimeEditText"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintTop_toTopOf="@+id/StartTimeEditText"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <TextView
+        android:id="@+id/EndTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="34dp"
+        android:text="Start Time"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StartTimeText" />
+
+    <EditText
+        android:id="@+id/EndTimeEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="datetime"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/EndTimeText"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editText3" />
+
+    <ImageButton
+        android:id="@+id/EndTimePickerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_access_time_24"
+        app:layout_constraintBottom_toBottomOf="@+id/EndTimeEditText"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintTop_toTopOf="@+id/EndTimeEditText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/join_button"
+        android:layout_width="350dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/join_button_background"
+        android:text="Create"
+
+
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

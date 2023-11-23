@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -24,14 +25,15 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.Firebase
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.storage
+//import com.google.firebase.Firebase
+//import com.google.firebase.database.DatabaseReference
+//import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.storage.FirebaseStorage
+//import com.google.firebase.storage.StorageReference
+//import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -41,15 +43,15 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
-    private lateinit var database: DatabaseReference
-    private lateinit var storage: StorageReference
+    //private lateinit var database: DatabaseReference
+    //private lateinit var storage: StorageReference
     private lateinit var cameraController: LifecycleCameraController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        database = FirebaseDatabase.getInstance().getReference("Test")
-        storage = FirebaseStorage.getInstance().getReference("TestEvent")
+        //database = FirebaseDatabase.getInstance().getReference("Test")
+        //storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
 
         //setContentView(R.layout.activity_main)
@@ -68,6 +70,19 @@ class MainActivity : AppCompatActivity() {
                }
                else -> false
             }
+        }
+
+        //Create/Join event button handling
+        val createEventBtn: Button = findViewById(R.id.event_create_button)
+        createEventBtn.setOnClickListener {
+            startActivity(Intent(this@MainActivity, JoinCreateEventActivity::class.java))
+//            val joinEventFragment = JoinEventFragment()
+//            val fragment: Fragment? = supportFragmentManager.findFragmentByTag(JoinEventFragment::class.java.simpleName)
+//
+//            if (fragment !is JoinEventFragment){
+//                supportFragmentManager.beginTransaction()
+//                    .add()
+//            }
         }
 
         // Checking if permissions were granted in a previous session
@@ -143,35 +158,35 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun  onCaptureSuccess(image: ImageProxy) {
-                    super.onCaptureSuccess(image)
-
-                    // setting the folder location in Firebase
-                    val imageRef = storage.child("test.jpg")
-
-                    // grabbing the image from memory and converting it to Byte data
-                    var bitmap: Bitmap = image.convertImageProxyToBitmap()
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                    val data = baos.toByteArray()
-
-                    var toastText = ""
-
-                    // upload the image (Byte data) to Firebase cloud
-                    var uploadTask = imageRef.putBytes(data)
-                    uploadTask.addOnFailureListener {
-                        toastText = "Failure to Upload"
-                    }.addOnSuccessListener { taskSnapshot ->
-                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                        toastText = "Successful Upload"
-                    }.addOnCanceledListener {
-                        toastText = "Canceled Upload"
-                    }.addOnCompleteListener {
-                        toastText = "Upload Complete"
-                    }
-
-                    Toast.makeText(this@MainActivity, toastText, Toast.LENGTH_SHORT).show()
-
-                    image.close()
+//                    super.onCaptureSuccess(image)
+//
+//                    // setting the folder location in Firebase
+//                    val imageRef = storage.child("test.jpg")
+//
+//                    // grabbing the image from memory and converting it to Byte data
+//                    var bitmap: Bitmap = image.convertImageProxyToBitmap()
+//                    val baos = ByteArrayOutputStream()
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//                    val data = baos.toByteArray()
+//
+//                    var toastText = ""
+//
+//                    // upload the image (Byte data) to Firebase cloud
+//                    var uploadTask = imageRef.putBytes(data)
+//                    uploadTask.addOnFailureListener {
+//                        toastText = "Failure to Upload"
+//                    }.addOnSuccessListener { taskSnapshot ->
+//                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+//                        toastText = "Successful Upload"
+//                    }.addOnCanceledListener {
+//                        toastText = "Canceled Upload"
+//                    }.addOnCompleteListener {
+//                        toastText = "Upload Complete"
+//                    }
+//
+//                    Toast.makeText(this@MainActivity, toastText, Toast.LENGTH_SHORT).show()
+//
+//                    image.close()
                 }
             }
         )
