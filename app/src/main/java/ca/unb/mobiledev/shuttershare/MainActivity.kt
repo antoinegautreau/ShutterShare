@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Rational
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var database: DatabaseReference
@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private var lensFacing: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
+    private lateinit var spinnerEvents: Spinner
     private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
-    private lateinit var autoCompleteTextView: AutoCompleteTextView
 
     private var sharedPrefs: SharedPreferences? = null
 
@@ -55,12 +55,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         database = FirebaseDatabase.getInstance().getReference("Test")
-        storage = FirebaseStorage.getInstance().getReference("TestEvent")
+        //storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
         setContentView(viewBinding.root)
 
         // Creating/setting up the SharedPreference file
         sharedPrefs = getSharedPreferences("ShutterShareData", MODE_PRIVATE)
+
+        // Events Spinner (Event list) setup
+        spinnerEvents = viewBinding.spinnerEvents
 
         // BOTTOM NAVIGATION SETUP
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
@@ -90,15 +93,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        // ACTIVE EVENTS LIST
-        autoCompleteTextView = viewBinding.autoCompleteTextview
-        var adapterItems = ArrayAdapter<String>(this, R.layout.list_item, activeEventsList)
-        autoCompleteTextView.setAdapter(adapterItems)
-
-//        autoCompleteTextView.setOnClickListener {
-//            var item =
-//        }
 
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
@@ -157,12 +151,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e(TAG, "UseCase binding failed", e)
         }
-
-
-//        cameraController = LifecycleCameraController(baseContext)
-//        cameraController.bindToLifecycle(this)
-//        cameraController.cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA // sets the selfie camera the default
-//        previewView.controller = cameraController
     }
 
     private fun flipCamera() {
@@ -177,29 +165,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        // Create time stamped name and MediaStore entry
-//        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.CANADA)
-//            .format(System.currentTimeMillis())
-
-        // Setting up the content values for MediaStore to save the photos to the device
-        // MAY WANT TO CHANGE THIS LATER ON TO THE CLOUD STUFF...?
-//        val contentValues = ContentValues().apply {
-//            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-//            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-//            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-//                put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/ShutterShare-Image")
-//            }
-//        }
-
-        // Create output options object which contains file + metadata
-//        val outputOptions = ImageCapture.OutputFileOptions
-//            .Builder(contentResolver,
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                contentValues)
-//            .build()
-
-        // Set up image capture listener, which is triggered after photo has been taken
-        // right now when a picture is taken, it uploads to firebase cloud
         imageCapture.takePicture(
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageCapturedCallback() {
@@ -210,12 +175,6 @@ class MainActivity : AppCompatActivity() {
                 override fun  onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
 
-                    // grabbing the image from memory and converting it to Byte data
-//                    var bitmap: Bitmap = image.convertImageProxyToBitmap()
-//                    val baos = ByteArrayOutputStream()
-//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//                    val data = baos.toByteArray()
-
                     var intent = Intent(this@MainActivity, PicturePreview::class.java)
 
                     val extras = ExtendedDataHolder.instance
@@ -225,47 +184,12 @@ class MainActivity : AppCompatActivity() {
                     //intent.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
                     //intent.putExtra("EventSelected", selectedEvent)
                     // putExtra for picture metadata???
-                    Log.e("AppDebug", "Before start activity")
                     startActivity(intent)
                     overridePendingTransition(0,0)
-
-                    //image.close()
-
-                    // START --------(can probably be moved to PicturePreview Activity)------------------------------------------
-                    // setting the folder location in Firebase
-//                    val imageRef = storage.child("test.jpg")
-//
-//                    var toastText = ""
-//
-//                    // upload the image (Byte data) to Firebase cloud
-//                    var uploadTask = imageRef.putBytes(data)
-//                    uploadTask.addOnFailureListener {
-//                        toastText = "Failure to Upload"
-//                    }.addOnSuccessListener { taskSnapshot ->
-//                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-//                        toastText = "Successful Upload"
-//                    }.addOnCanceledListener {
-//                        toastText = "Canceled Upload"
-//                    }.addOnCompleteListener {
-//                        toastText = "Upload Complete"
-//                    }
-//
-//                    Toast.makeText(this@MainActivity, toastText, Toast.LENGTH_SHORT).show()
-                    // END -------------------------------------------------------
-
-
                 }
             }
         )
     }
-
-//    fun ImageProxy.convertImageProxyToBitmap(): Bitmap {
-//        val buffer = planes[0].buffer
-//        buffer.rewind()
-//        val bytes = ByteArray(buffer.capacity())
-//        buffer.get(bytes)
-//        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-//    }
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())

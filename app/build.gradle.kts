@@ -50,6 +50,9 @@ dependencies {
     //implementation("com.google.firebase:firebase-storage-ktx")
     implementation("androidx.concurrent:concurrent-futures-ktx:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    implementation("com.google.firebase:firebase-auth:22.3.0")
+
+    //implementation("com.github.skydoves:powerspinner:1.2.7")
 
     val camerax_version = "1.2.0"
     implementation("androidx.camera:camera-core:${camerax_version}")

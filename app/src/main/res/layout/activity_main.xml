@@ -32,20 +32,52 @@
         <!--            app:layout_constraintRight_toRightOf="parent" />-->
         </androidx.camera.view.PreviewView>
 
-    <AutoCompleteTextView
-        android:id="@+id/auto_complete_textview"
-        android:layout_width="280dp"
+
+    <Spinner
+        android:id="@+id/spinner_events"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="676dp"
-        android:layout_toStartOf="@+id/event_create_button"
-        android:layout_toEndOf="@+id/event_drop_down_button"
-        android:inputType="none" />
+        android:layout_margin="18dp"
+        />
+<!--    <com.skydoves.powerspinner.PowerSpinnerView-->
+<!--        android:id="@+id/spinnerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:elevation="2dp"-->
+<!--        android:hint="Question 1"-->
+<!--        android:padding="10dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textColorHint="@color/white"-->
+<!--        android:textSize="14.5sp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="14dp"-->
+<!--        android:layout_marginTop="120dp"-->
+<!--        android:layout_marginEnd="13dp"-->
+<!--        android:layout_marginBottom="576dp"-->
+<!--        android:layout_toStartOf="@+id/event_create_button"-->
+<!--        android:layout_toEndOf="@+id/event_drop_down_button"-->
+<!--        app:spinner_arrow_gravity="end"-->
+<!--        app:spinner_arrow_tint="@color/white"-->
+<!--        app:spinner_divider_color="@color/white"-->
+<!--        app:spinner_divider_show="true"-->
+<!--        app:spinner_divider_size="0.4dp"-->
+<!--        app:spinner_item_array="@array/questions" />-->
+
+<!--    <AutoCompleteTextView-->
+<!--        android:id="@+id/auto_complete_textview"-->
+<!--        android:layout_width="280dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:elevation="2dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="14dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="13dp"-->
+<!--        android:layout_marginBottom="676dp"-->
+<!--        android:layout_toStartOf="@+id/event_create_button"-->
+<!--        android:layout_toEndOf="@+id/event_drop_down_button"-->
+<!--        android:inputType="none" />-->
 
     <ImageButton
         android:id="@+id/flip_camera_button"
