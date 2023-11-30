@@ -8,8 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Rational
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,7 +33,6 @@ import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private var lensFacing: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
-    private lateinit var spinnerEvents: Spinner
+    private lateinit var eventsSpinner: Spinner
     private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
 
     private var sharedPrefs: SharedPreferences? = null
@@ -63,7 +63,20 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences("ShutterShareData", MODE_PRIVATE)
 
         // Events Spinner (Event list) setup
-        spinnerEvents = viewBinding.spinnerEvents
+        eventsSpinner = viewBinding.eventsSpinner
+        val arrayAdapter = ArrayAdapter<String>(this, R.layout.spinner_text, activeEventsList)
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
+        eventsSpinner.adapter = arrayAdapter
+        eventsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, index: Int, id: Long) {
+                Toast.makeText(this@MainActivity, "Event Selected: " + activeEventsList[index], Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
 
         // BOTTOM NAVIGATION SETUP
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
@@ -98,6 +111,9 @@ class MainActivity : AppCompatActivity() {
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
 
         viewBinding.flipCameraButton.setOnClickListener { flipCamera() }
+
+
+
 
 //        viewBinding.loginScreenButton.setOnClickListener {
 //            val intent = Intent(this, LoginScreen::class.java)

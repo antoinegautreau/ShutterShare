@@ -33,12 +33,7 @@
         </androidx.camera.view.PreviewView>
 
 
-    <Spinner
-        android:id="@+id/spinner_events"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="18dp"
-        />
+
 <!--    <com.skydoves.powerspinner.PowerSpinnerView-->
 <!--        android:id="@+id/spinnerView"-->
 <!--        android:layout_width="match_parent"-->
@@ -150,6 +145,29 @@
             android:elevation="20dp"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"/>
+
+    <Spinner
+        android:id="@+id/events_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="50dp"
+        android:dropDownWidth="match_parent"
+        android:popupBackground="@drawable/dropdown_background"
+        android:theme="@style/SpinnerStyle"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/event_create_button"
+        android:layout_toEndOf="@+id/event_drop_down_button"
+        android:background="@drawable/spinner_background"/>
+
+<!--
+-->
+    <!--        android:gravity="center"-->
+
+
 
 
     <!--    <Button-->

@@ -54,6 +54,8 @@ dependencies {
 
     //implementation("com.github.skydoves:powerspinner:1.2.7")
 
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
     val camerax_version = "1.2.0"
     implementation("androidx.camera:camera-core:${camerax_version}")
     implementation("androidx.camera:camera-camera2:${camerax_version}")
