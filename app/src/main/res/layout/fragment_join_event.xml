@@ -93,13 +93,13 @@
         android:text="Enter Code"
         android:textColor="@color/black"
         android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintBottom_toTopOf="@+id/editTextCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/editTextCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -109,7 +109,7 @@
         android:layout_marginBottom="223dp"
         android:background="@drawable/enter_code_background"
         android:ems="10"
-
+        android:maxLength="6"
         android:gravity="center"
         android:hint="######"
         android:inputType="number"
@@ -126,6 +126,8 @@
         android:layout_width="350dp"
         android:layout_height="0dp"
         android:layout_marginBottom="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/join_button_background"
         android:text="Join"
 
@@ -134,6 +136,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
