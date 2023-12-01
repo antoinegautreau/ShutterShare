@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JoinEventFragment">
+
+    <!-- TO DO: Update blank fragment layout -->
+
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:text="Enter Code"-->
+
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+
+    <!--        app:layout_constraintHorizontal_bias="1.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.0" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button2"-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="50dp"-->
+
+    <!--        android:layout_marginStart="48dp"-->
+    <!--        android:text="Join Event"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.114" />-->
+
+
+    <!--    <Button-->
+    <!--        android:id="@+id/button3"-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="50dp"-->
+
+    <!--        android:layout_marginStart="216dp"-->
+    <!--        android:layout_marginTop="78dp"-->
+    <!--        android:layout_marginBottom="169dp"-->
+    <!--        android:text="Create Event"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.114" />-->
+
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView3"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:textColor="@color/black"-->
+
+    <!--        android:layout_marginStart="58dp"-->
+    <!--        android:layout_marginEnd="58dp"-->
+    <!--        android:layout_marginBottom="296dp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="OR"-->
+    <!--        android:textSize="48sp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/button4" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/QR_code_join_button"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="65dp"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:layout_marginBottom="230dp"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        android:background="@drawable/qr_code_button"-->
+
+    <!--        android:text="Enter QR Code"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+
+        android:text="Enter Code"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="223dp"
+        android:background="@drawable/enter_code_background"
+        android:ems="10"
+        android:maxLength="6"
+        android:gravity="center"
+        android:hint="######"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textColor="@android:color/black"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/join_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/join_button"
+        android:layout_width="350dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/join_button_background"
+        android:text="Join"
+
+
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

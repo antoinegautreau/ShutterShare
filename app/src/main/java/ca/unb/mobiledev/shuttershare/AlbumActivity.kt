@@ -8,6 +8,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+// possibly don't need these two
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+
 class AlbumActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
@@ -28,6 +32,7 @@ class AlbumActivity : AppCompatActivity() {
         recyclerView.adapter = imageAdapter
 
 
+        //Bottom Nav
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.bottom_album
         bottomNavigationView.setOnItemSelectedListener {

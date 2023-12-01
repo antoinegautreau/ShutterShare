@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -94,6 +96,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        
+        //Create/Join event button handling
+        val createEventBtn: Button = findViewById(R.id.event_create_button)
+        createEventBtn.setOnClickListener {
+            startActivity(Intent(this@MainActivity, JoinCreateEventActivity::class.java))
+//            val joinEventFragment = JoinEventFragment()
+//            val fragment: Fragment? = supportFragmentManager.findFragmentByTag(JoinEventFragment::class.java.simpleName)
+//
+//            if (fragment !is JoinEventFragment){
+//                supportFragmentManager.beginTransaction()
+//                    .add()
+//            }
+        }
 
         // CAMERA PERMISSIONS CHECK
         // Checking if permissions were granted in a previous session
