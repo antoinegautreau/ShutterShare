@@ -8,13 +8,22 @@
     android:layout_height="match_parent"
     tools:context=".AlbumActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#E0E0E0"
-        android:clipToPadding="false"
-        android:padding="4dp" />
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#E0E0E0"-->
+<!--        android:clipToPadding="false"-->
+<!--        android:padding="4dp" />-->
+
+    <ImageView
+        android:id="@+id/photoImageView"
+        android:layout_width="229dp"
+        android:layout_height="439dp"
+        android:clickable="true"
+        android:onClick="onPhotoClick"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_photo_camera_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

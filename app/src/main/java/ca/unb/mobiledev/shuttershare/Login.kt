@@ -3,6 +3,7 @@ package ca.unb.mobiledev.shuttershare
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import ca.unb.mobiledev.shuttershare.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,8 @@ class Login : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d("ShutterShareLogin", "in login")
+
         firebaseAuth = FirebaseAuth.getInstance()
         binding.textView.setOnClickListener {
             val intent = Intent(this, Register::class.java)
@@ -30,9 +33,12 @@ class Login : AppCompatActivity() {
             if (email.isNotEmpty() && pass.isNotEmpty()) {
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
                     if(it.isSuccessful){
+                        Log.d("ShutterShareLogin", "Successful Login")
+                        //val intent = Intent(this, MainActivity::class.java)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }else{
+                        Log.d("ShutterShareLogin", "Failed Login")
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }

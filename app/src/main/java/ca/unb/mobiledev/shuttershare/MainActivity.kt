@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
+
         database = FirebaseDatabase.getInstance().getReference("Test")
         //storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
@@ -97,9 +98,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        
+
         //Create/Join event button handling
-        val createEventBtn: Button = findViewById(R.id.event_create_button)
+        //val createEventBtn: Button = findViewById(R.id.event_create_button)
+        val createEventBtn = viewBinding.eventCreateButton
         createEventBtn.setOnClickListener {
             startActivity(Intent(this@MainActivity, JoinCreateEventActivity::class.java))
 //            val joinEventFragment = JoinEventFragment()
@@ -110,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 //                    .add()
 //            }
         }
-
+//
         // CAMERA PERMISSIONS CHECK
         // Checking if permissions were granted in a previous session
         if(!hasPermissions(baseContext)) {
