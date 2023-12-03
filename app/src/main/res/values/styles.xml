@@ -5,11 +5,17 @@
         <item name="android:dividerHeight">0.5dp</item>
     </style>
 
+<!--    <style name="ImageCaptureButton" parent="Widget.AppCompat.Button">-->
+<!--        <item name="android:color">#ffffffe3</item>-->
+<!--    </style>-->
+
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--
              we can add new @style/... like the one below after defining it above
              We can then use these @style/... in our xml files for the "style" property
         -->
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
+<!--        <item name="android:buttonStyle">@style/ImageCaptureButton</item>-->
     </style>
 </resources>

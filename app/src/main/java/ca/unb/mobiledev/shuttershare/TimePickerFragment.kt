@@ -26,10 +26,17 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
         c.set(Calendar.HOUR_OF_DAY, hour)
         c.set(Calendar.MINUTE, minute)
 
-        val selectTime = "$hour:$minute";
+        var selectTime = "$hour:$minute";
+        if(minute < 10) {
+            selectTime = "$hour:0$minute";
+        }
+
 //        val selectTime = SimpleDateFormat("", Locale.ENGLISH).format(c.time)
         val selectTimeBundle = Bundle()
         selectTimeBundle.putString("SELECTED_TIME", selectTime)
+        selectTimeBundle.putInt("SELECTED_HOUR", c.get(Calendar.HOUR_OF_DAY))//hour)
+        selectTimeBundle.putInt("SELECTED_MINUTE", c.get(Calendar.MINUTE))//minute)
+
 
         setFragmentResult("REQUEST_KEY", selectTimeBundle)
     }

@@ -8,9 +8,11 @@ import androidx.viewpager.widget.ViewPager
 import ca.unb.mobiledev.shuttershare.databinding.ActivityJoinCreateEventBinding
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.DatabaseReference
 
 class JoinCreateEventActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityJoinCreateEventBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_create_event)
@@ -31,7 +33,8 @@ class JoinCreateEventActivity : AppCompatActivity() {
 
         val backButton: ImageButton = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+            //finish()
             //overridePendingTransition(0,0)
         }
     }

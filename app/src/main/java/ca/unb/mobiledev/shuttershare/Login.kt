@@ -34,8 +34,11 @@ class Login : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
                     if(it.isSuccessful){
                         Log.d("ShutterShareLogin", "Successful Login")
-                        //val intent = Intent(this, MainActivity::class.java)
+
+                        // TODO Get username from DB
+
                         val intent = Intent(this, MainActivity::class.java)
+                        // TODO intent.putExtras("Username", username)
                         startActivity(intent)
                     }else{
                         Log.d("ShutterShareLogin", "Failed Login")

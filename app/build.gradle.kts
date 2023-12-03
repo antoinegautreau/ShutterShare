@@ -52,6 +52,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
 
+    implementation("com.google.code.gson:gson:2.8.5")
+
     //implementation("com.github.skydoves:powerspinner:1.2.7")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")

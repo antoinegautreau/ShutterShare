@@ -1,5 +1,6 @@
 package ca.unb.mobiledev.shuttershare
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ca.unb.mobiledev.shuttershare.databinding.FragmentCreateEvent2Binding
+import ca.unb.mobiledev.shuttershare.entity.Event
+import ca.unb.mobiledev.shuttershare.util.ActiveEvents
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import java.sql.Timestamp
 
 
 class CreateEventFragment : Fragment() {
@@ -31,6 +37,15 @@ class CreateEventFragment : Fragment() {
     private lateinit var startTimeText :TextView
     private lateinit var endDateText :TextView
     private lateinit var startDateText:TextView
+
+    // for database
+    private var endYear = 0
+    private var endMonth = 0
+    private var endDay = 0
+    private var endHour = 0
+    private var endMinute = 0
+
+    private lateinit var database: DatabaseReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +77,7 @@ class CreateEventFragment : Fragment() {
         startTimeText = view.findViewById<TextView>(R.id.StartTimeEditText)
         endDateText = view.findViewById<TextView>(R.id.endDateEditText)
         startDateText = view.findViewById<TextView>(R.id.startDateEditText)
+
 
         _binding.apply {
             startDateBtn?.setOnClickListener{
@@ -101,6 +117,10 @@ class CreateEventFragment : Fragment() {
                 ) {
                         resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
                     val date = bundle.getString("SELECTED_DATE")
+                    endYear = bundle.getInt("SELECTED_YEAR")
+                    endMonth = bundle.getInt("SELECTED_MONTH")
+                    endDay = bundle.getInt("SELECTED_DAY")
+
                     //val editText = view.findViewById<TextView>(R.id.endDateEditText)
                     endDateText?.setText(date)
 
@@ -141,6 +161,8 @@ class CreateEventFragment : Fragment() {
                 ) {
                         resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
                     val time = bundle.getString("SELECTED_TIME")
+                    endHour = bundle.getInt("SELECTED_HOUR")
+                    endMinute = bundle.getInt("SELECTED_MINUTE")
                     //val editText = view.findViewById<TextView>(R.id.EndTimeEditText)
                     endTimeText?.setText(time)
 
@@ -181,9 +203,35 @@ class CreateEventFragment : Fragment() {
                     Toast.makeText(activity, "Event Created Successfully", Toast.LENGTH_SHORT).show()
                 }
 
+                // Generating an Event Code
+                // SHOULD CHECK DB TO MAKE SURE THIS EVENT CODE DOESN'T EXIST BEFORE UPLOADING IT
+                val randomValues = List(6) { (0..9).random() }
+                var eventCode = ""
+                for (i in 0..5) {
+                    eventCode += randomValues[i].toString()
+                }
 
-
+                val calendar: Calendar = Calendar.getInstance()
+                calendar.set(endYear, endMonth, endDay, endHour, endMinute, 0)
+                val endTimestamp = calendar.timeInMillis
+                Log.d("Calendar", "Year: " + endYear + ", Month: " + endMonth + ", Day: " + endDay + ", Hour: " + endHour + ", Minute: " + endMinute)
+                Log.d("Calendar", "Actual: " + calendar.toString())
                 //Submit to database
+                // "events" in the DB is to check to make sure that when we try joining an event that it actually exists and is not expired
+                // probably don't need startDate and startTime, can just have an endDate and endTime and can then just assume the event is
+                // started from NOW.
+                val event = Event(eventCode, eventNameStr, endTimestamp)
+                database = FirebaseDatabase.getInstance().getReference("events")
+                database.child(eventCode).setValue(event).addOnSuccessListener {
+                    val activeEvents = ActiveEvents()
+                    activeEvents.addEvent(requireContext(), eventCode, eventNameStr, endTimestamp)
+
+                    Toast.makeText(context, "Event added successfully to DB", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(context, "Failed to add event to DB", Toast.LENGTH_SHORT).show()
+                }
+
+                // write event into the active_events.json internal storage file
             }
 
         }

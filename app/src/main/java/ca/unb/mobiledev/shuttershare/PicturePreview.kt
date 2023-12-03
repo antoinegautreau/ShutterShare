@@ -1,5 +1,6 @@
 package ca.unb.mobiledev.shuttershare
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +14,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageProxy
+import ca.unb.mobiledev.shuttershare.util.ActiveEvents
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -38,7 +40,6 @@ class PicturePreview : AppCompatActivity() {
         sharePrefs = getSharedPreferences("ShutterShareData", MODE_PRIVATE)
         // May want to use sharedPrefs to fill in the DB and Storage values?? Or will these always be the same?
         database = FirebaseDatabase.getInstance().getReference("Test")
-        storage = FirebaseStorage.getInstance().getReference("TestEvent")
 
         mImageView = findViewById(R.id.picture_preview)
         mCloseButton = findViewById(R.id.close_picture_button)
@@ -72,17 +73,27 @@ class PicturePreview : AppCompatActivity() {
             //mImageView.set
         }
         else {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+            //finish()
         }
 
         // Close picture and go back to Camera view (MainActivity)
         mCloseButton.setOnClickListener {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+            //finish()
         }
 
         mSendButton.setOnClickListener {
-            // setting the folder location in Firebase???
-            val imageRef = storage.child("test.jpg")
+            val pictureName = (extras.getExtra("PictureTimeTaken").toString()) + ".jpg"
+            val eventSelected = extras.getExtra("EventSelected") as String
+
+            val activeEvents = ActiveEvents()
+            var eventCode = activeEvents.getEventCode(this, eventSelected)
+            Log.d("PicturePreview", "Picture name: " + pictureName + ", Event Selected: " + eventSelected + ", Event Code: " + eventCode)
+
+            // setting the folder location in Firebase
+            storage = FirebaseStorage.getInstance().getReference()//eventCode)
+            val imageRef = storage.child(eventCode + "/" + pictureName)
 
             // Converting the image bitmap to byte array
             val baos = ByteArrayOutputStream()

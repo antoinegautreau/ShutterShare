@@ -32,6 +32,7 @@ import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
+import ca.unb.mobiledev.shuttershare.util.ActiveEvents
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -49,9 +50,11 @@ class MainActivity : AppCompatActivity() {
     private var lensFacing: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
     private lateinit var eventsSpinner: Spinner
-    private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
+    //private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
 
     private var sharedPrefs: SharedPreferences? = null
+
+//    private lateinit var thisUsername: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,11 @@ class MainActivity : AppCompatActivity() {
         // Creating/setting up the SharedPreference file
         sharedPrefs = getSharedPreferences("ShutterShareData", MODE_PRIVATE)
 
+        // Remove events that no longer active & Update Spinner with list of Active Events
+        val activeEvents = ActiveEvents()
+        activeEvents.removeExpiredEvents(this)
+        val activeEventsList = activeEvents.getArrayOfEventNames(this)
+
         // Events Spinner (Event list) setup
         eventsSpinner = viewBinding.eventsSpinner
         val arrayAdapter = ArrayAdapter<String>(this, R.layout.spinner_text, activeEventsList)
@@ -72,14 +80,15 @@ class MainActivity : AppCompatActivity() {
         eventsSpinner.adapter = arrayAdapter
         eventsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, index: Int, id: Long) {
-                Toast.makeText(this@MainActivity, "Event Selected: " + activeEventsList[index], Toast.LENGTH_SHORT).show()
+               // Toast.makeText(this@MainActivity, "Event Selected: " + index, Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
+                // TODO("Not yet implemented")
             }
 
         }
+
 
         // BOTTOM NAVIGATION SETUP
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
@@ -112,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 //                    .add()
 //            }
         }
-//
+
         // CAMERA PERMISSIONS CHECK
         // Checking if permissions were granted in a previous session
         if(!hasPermissions(baseContext)) {
@@ -124,36 +133,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
 
         viewBinding.flipCameraButton.setOnClickListener { flipCamera() }
-
-
-
-
-//        viewBinding.loginScreenButton.setOnClickListener {
-//            val intent = Intent(this, LoginScreen::class.java)
-//            startActivity(intent)
-//        }
-
-        //Firebase Test code
-        //Toast.makeText(this, "Firebase Connection Successful", Toast.LENGTH_SHORT).show()
-
-//        val firstName = "John"
-//        val lastName = "Smith"
-//        val age = "33"
-//        val userName = "jsmith"
-
-
-//        val test = Test(firstName, lastName, age, userName)
-//        database.child(userName).setValue(test).addOnSuccessListener {
-//            Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
-//        }.addOnFailureListener {
-//            Toast.makeText(this, "Failed to Save", Toast.LENGTH_SHORT).show()
-//        }
-
     }
 
     private suspend fun startCamera() {
@@ -214,10 +196,9 @@ class MainActivity : AppCompatActivity() {
                     val extras = ExtendedDataHolder.instance
                     extras.putExtra("PicturePreviewImage", image)
                     extras.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
-                    //intent.putExtra("PicturePreviewData", data)
-                    //intent.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
-                    //intent.putExtra("EventSelected", selectedEvent)
-                    // putExtra for picture metadata???
+                    extras.putExtra("EventSelected", eventsSpinner.selectedItem.toString())
+                    extras.putExtra("PictureTimeTaken", System.currentTimeMillis())
+                    //extras.putExtra("User", thisUsername)
                     startActivity(intent)
                     overridePendingTransition(0,0)
                 }
