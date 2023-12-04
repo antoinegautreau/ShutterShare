@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.icu.util.Calendar
 import android.util.Log
-import androidx.camera.core.impl.utils.ContextUtil.getBaseContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
-import java.nio.charset.StandardCharsets
 
 
-class ActiveEvents {
+class ActiveEvents() {
     private val finishedEvents = FinishedEvents()
+    private val sharedPrefUtil = SharedPreferenceUtils()
 
     fun addEvent(context: Context, eventCode: String, eventName: String, endTimeInMillis: Long) {
         // TODO add the event
@@ -109,6 +108,7 @@ class ActiveEvents {
                 val elementObject = jsonArray.getJSONObject(i)
 
                 currentEventName = elementObject.getString(EVENT_NAME)
+                //var currentEventCode = getEventCode(context, currentEventName)
 
                 // Put event name in array
                 eventNameArray[i] = currentEventName
@@ -123,32 +123,39 @@ class ActiveEvents {
 
     // Assumes that the eventNames are unique...
     fun getEventCode(context: Context, eventName: String): String {
-        val jsonText = loadJSONFromInternalStorage(context)
-        val jsonObject = JSONObject(jsonText)
+        if(fileExists(context)) {
+            val jsonText = loadJSONFromInternalStorage(context)
+            val jsonObject = JSONObject(jsonText)
 
-        var eventCode = ""
-        var currentEventName = ""
-        val jsonArray = jsonObject.getJSONArray(ACTIVE_EVENTS)
-        var eventNameArray = arrayOfNulls<String>(jsonArray.length())
-        for (i in 0 until jsonArray.length()) {
-            // Create a JSON Object from individual JSON Array element
-            val elementObject = jsonArray.getJSONObject(i)
+            var eventCode = ""
+            var currentEventName = ""
+            val jsonArray = jsonObject.getJSONArray(ACTIVE_EVENTS)
+            var eventNameArray = arrayOfNulls<String>(jsonArray.length())
+            for (i in 0 until jsonArray.length()) {
+                // Create a JSON Object from individual JSON Array element
+                val elementObject = jsonArray.getJSONObject(i)
 
-            currentEventName = elementObject.getString(EVENT_NAME)
+                currentEventName = elementObject.getString(EVENT_NAME)
 
-            if(currentEventName.equals(eventName)) {
-                eventCode = elementObject.getString(EVENT_CODE)
+                if(currentEventName.equals(eventName)) {
+                    eventCode = elementObject.getString(EVENT_CODE)
+                }
             }
+
+            Log.d(TAG, jsonArray.toString())
+
+            return eventCode
         }
 
-        Log.d(TAG, jsonArray.toString())
-
-        return eventCode
+        return ""
     }
 
     private fun loadJSONFromInternalStorage(context: Context): String? {
         try {
-            val file = JSON_FILE.let { File(context.filesDir, it) }
+            val sharedPrefs = sharedPrefUtil.getSharedPrefs(context)
+            val loggedInUser = sharedPrefs.getString("username", null)
+
+            val file = ("${loggedInUser}${JSON_FILE}").let { File(context.filesDir, it) }
 
             var line: String?
             val stringBuilder = StringBuilder()
@@ -169,7 +176,15 @@ class ActiveEvents {
 
     private fun writeJSONToInternalStorage(context: Context, jsonString: String) {
         try {
-            val filename = JSON_FILE
+            val sharedPrefs = sharedPrefUtil.getSharedPrefs(context)
+            val loggedInUser = sharedPrefs.getString("username", null)
+            Log.d(TAG, "Username: $loggedInUser")
+
+//            val dirPath: String = context.filesDir.getAbsolutePath() + File.separator + loggedInUser
+//            val projDir = File(dirPath)
+//            if (!projDir.exists()) projDir.mkdirs()
+
+            val filename = ("${loggedInUser}${JSON_FILE}")
             val fileContents = jsonString
             context.openFileOutput(filename, MODE_PRIVATE).use {
                 it.write(fileContents.toByteArray())
@@ -181,7 +196,11 @@ class ActiveEvents {
     }
 
     fun fileExists(context: Context): Boolean {
-        val file = context.getFileStreamPath(JSON_FILE)
+        val sharedPrefs = sharedPrefUtil.getSharedPrefs(context)
+        val loggedInUser = sharedPrefs.getString("username", null)
+        Log.d(TAG, "Username: $loggedInUser")
+
+        val file = context.getFileStreamPath(loggedInUser + JSON_FILE)
         Log.d(TAG, "active_events.json exists: " + file.exists())
         return file.exists()
     }

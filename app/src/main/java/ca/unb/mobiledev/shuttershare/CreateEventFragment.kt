@@ -1,5 +1,6 @@
 package ca.unb.mobiledev.shuttershare
 
+import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ca.unb.mobiledev.shuttershare.databinding.FragmentCreateEvent2Binding
 import ca.unb.mobiledev.shuttershare.entity.Event
@@ -46,7 +48,6 @@ class CreateEventFragment : Fragment() {
     private var endMinute = 0
 
     private lateinit var database: DatabaseReference
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

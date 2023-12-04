@@ -123,6 +123,11 @@ class MainActivity : AppCompatActivity() {
 //            }
         }
 
+        val viewActiveEventsBtn = viewBinding.activeEventsButton
+        viewActiveEventsBtn.setOnClickListener {
+            startActivity(Intent(this@MainActivity, ActiveEventsDisplayActivity::class.java))
+        }
+
         // CAMERA PERMISSIONS CHECK
         // Checking if permissions were granted in a previous session
         if(!hasPermissions(baseContext)) {
