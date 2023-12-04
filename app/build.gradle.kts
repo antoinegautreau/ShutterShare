@@ -54,7 +54,8 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.8.5")
 
-    //implementation("com.github.skydoves:powerspinner:1.2.7")
+    //picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
 

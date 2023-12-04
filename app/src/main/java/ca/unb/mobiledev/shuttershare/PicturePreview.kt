@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageProxy
 import ca.unb.mobiledev.shuttershare.util.ActiveEvents
@@ -53,6 +52,7 @@ class PicturePreview : AppCompatActivity() {
             val image: ImageProxy = extras.getExtra("PicturePreviewImage") as ImageProxy
             bitmap = image.image!!.convertImageProxyToBitmap()
 
+            val lensFlipped: Boolean = extras.getExtra("LensFlipped") as Boolean
 
             //var croppedImage = cropImage(bitmap, mImageView, mImageView)
             //val imageBitmap = BitmapFactory.decodeByteArray(croppedImage, 0, croppedImage!!.size)
@@ -67,8 +67,14 @@ class PicturePreview : AppCompatActivity() {
             //val imageViewRotation: Float = extras.getExtra("ImageViewRotation") as Float
             image.close()
 
-            mImageView.rotation = 360 - image.imageInfo.rotationDegrees.toFloat() // not sure if doing 360 - rotation is the best thing, but it works for now
-            mImageView.setImageBitmap(flip(bitmap))
+            bitmap = rotateImage(bitmap, image.imageInfo.rotationDegrees.toFloat())
+            if(!lensFlipped){
+                bitmap = flip(bitmap!!)
+            }
+            mImageView.setImageBitmap(bitmap)
+
+           // mImageView.rotation = 360 - image.imageInfo.rotationDegrees.toFloat() // not sure if doing 360 - rotation is the best thing, but it works for now
+           // mImageView.setImageBitmap(flip(bitmap))
 
             //mImageView.set
         }
@@ -152,6 +158,15 @@ class PicturePreview : AppCompatActivity() {
 
         // return transformed image
         return Bitmap.createBitmap(src, 0, 0, src.width, src.height, matrix, true)
+    }
+
+    fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(
+            source, 0, 0, source.width, source.height,
+            matrix, true
+        )
     }
 
     private fun cropImage(bitmap: Bitmap, frame: View, reference: View): ByteArray {

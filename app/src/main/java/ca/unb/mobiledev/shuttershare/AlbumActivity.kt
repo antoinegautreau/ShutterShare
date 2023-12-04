@@ -3,19 +3,14 @@ package ca.unb.mobiledev.shuttershare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ScaleGestureDetector
 import android.view.View
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 // possibly don't need these two
-import androidx.viewpager.widget.ViewPager
+import ca.unb.mobiledev.shuttershare.entity.Folder
 import ca.unb.mobiledev.shuttershare.util.FinishedEvents
-import com.google.android.material.tabs.TabLayout
 
 class AlbumActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null

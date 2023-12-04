@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preview: Preview
     private lateinit var imageCapture: ImageCapture
     private var lensFacing: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+    private var lensFlipped: Boolean = false
 
     private lateinit var eventsSpinner: Spinner
     //private var activeEventsList = arrayOf("Cancun 2023", "Andy's Wedding", "Nationals 2023")
@@ -170,10 +171,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun flipCamera() {
-        if (lensFacing === CameraSelector.DEFAULT_FRONT_CAMERA)
+        if (lensFacing === CameraSelector.DEFAULT_FRONT_CAMERA){
             lensFacing = CameraSelector.DEFAULT_BACK_CAMERA
-        else if (lensFacing === CameraSelector.DEFAULT_BACK_CAMERA)
+            lensFlipped = true
+        }
+
+        else if (lensFacing === CameraSelector.DEFAULT_BACK_CAMERA) {
             lensFacing = CameraSelector.DEFAULT_FRONT_CAMERA
+            lensFlipped = false
+        }
 
         lifecycleScope.launch {
             startCamera()
@@ -195,6 +201,7 @@ class MainActivity : AppCompatActivity() {
 
                     val extras = ExtendedDataHolder.instance
                     extras.putExtra("PicturePreviewImage", image)
+                    extras.putExtra("LensFlipped", lensFlipped)
                     extras.putExtra("ImageViewRotation", image.imageInfo.rotationDegrees.toFloat())
                     extras.putExtra("EventSelected", eventsSpinner.selectedItem.toString())
                     extras.putExtra("PictureTimeTaken", System.currentTimeMillis())

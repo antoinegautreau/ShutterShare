@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shuttershare
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import ca.unb.mobiledev.shuttershare.entity.Folder
 
 class MyFolderAdapter constructor(
     private val getActivity: Activity,
@@ -27,6 +29,10 @@ class MyFolderAdapter constructor(
         holder.ivFolderImg.setImageResource(folderList[position].image)
 
         holder.cardView.setOnClickListener {
+            val intent = Intent(getActivity, PicturesActivity::class.java)
+            intent.putExtra("EventName", folderList[position].title)
+            getActivity.startActivity(intent)
+
             Toast.makeText(getActivity, folderList[position].title, Toast.LENGTH_SHORT).show()
         }
     }
