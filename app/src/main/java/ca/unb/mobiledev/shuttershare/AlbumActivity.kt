@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 // possibly don't need these two
 import ca.unb.mobiledev.shuttershare.entity.Folder
 import ca.unb.mobiledev.shuttershare.util.FinishedEvents
+import org.w3c.dom.Text
 
 class AlbumActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
@@ -60,6 +62,11 @@ class AlbumActivity : AppCompatActivity() {
         for(i in 0..eventNamesList.size-1) {
             var folder = Folder(eventNamesList[i]!!, eventCodesList[i]!!, R.drawable.baseline_folder_open_24)
             folderList.add(folder)
+        }
+
+        if(!folderList.isEmpty()){
+            val noFoldersFoundText: TextView = findViewById(R.id.noFoldersFoundText)
+            noFoldersFoundText.visibility = View.GONE
         }
 //        var folder = Folder("Avatar", R.drawable.baseline_folder_open_24)
 //        folderList.add(folder)
