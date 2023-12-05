@@ -33,7 +33,7 @@ class MyFolderAdapter constructor(
             intent.putExtra("EventName", folderList[position].title)
             getActivity.startActivity(intent)
 
-            Toast.makeText(getActivity, folderList[position].title, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(getActivity, folderList[position].title, Toast.LENGTH_SHORT).show()
         }
     }
 

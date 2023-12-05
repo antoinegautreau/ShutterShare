@@ -43,9 +43,9 @@ class Register : AppCompatActivity() {
                             //Add user to our DB
                             val user = User(email, username)
                             database.child(username).setValue(user).addOnSuccessListener {
-                                Toast.makeText(this, "User added successfully to DB", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "User added successfully", Toast.LENGTH_SHORT).show()
                             }.addOnFailureListener {
-                                Toast.makeText(this, "Failed to add user to DB", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Failed to add user", Toast.LENGTH_SHORT).show()
                             }
 
                             val intent = Intent(this, Login::class.java)

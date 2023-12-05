@@ -30,6 +30,7 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
+import androidx.core.view.size
 import androidx.lifecycle.lifecycleScope
 import ca.unb.mobiledev.shuttershare.databinding.ActivityMainBinding
 import ca.unb.mobiledev.shuttershare.util.ActiveEvents
@@ -139,7 +140,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
+        viewBinding.imageCaptureButton.setOnClickListener {
+            if(eventsSpinner.size > 0) {
+                takePhoto()
+            }
+            else {
+                Toast.makeText(this, "Join or create an event before taking pictures", Toast.LENGTH_SHORT).show()
+            }
+
+        }
 
         viewBinding.flipCameraButton.setOnClickListener { flipCamera() }
     }

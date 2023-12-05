@@ -111,7 +111,7 @@ class JoinEventFragment : Fragment() {
                     }
 
                 }.addOnFailureListener {
-                    Toast.makeText(context, "Failed to get event from DB", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Failed to retrieve event", Toast.LENGTH_SHORT).show()
                 }
             }
         }

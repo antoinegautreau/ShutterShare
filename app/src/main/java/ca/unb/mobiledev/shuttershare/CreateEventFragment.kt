@@ -28,17 +28,17 @@ class CreateEventFragment : Fragment() {
     private var _binding: FragmentCreateEvent2Binding? = null
     private val binding get() = _binding!!
 
-    private lateinit var startDateBtn:ImageButton
+//    private lateinit var startDateBtn:ImageButton
     private lateinit var endDateBtn:ImageButton
-    private lateinit var startTimeBtn:ImageButton
+//    private lateinit var startTimeBtn:ImageButton
     private lateinit var endTimeBtn :ImageButton
     private lateinit var createEventBtn :Button
 
     private lateinit var eventName :EditText
     private lateinit var endTimeText:TextView
-    private lateinit var startTimeText :TextView
+//    private lateinit var startTimeText :TextView
     private lateinit var endDateText :TextView
-    private lateinit var startDateText:TextView
+//    private lateinit var startDateText:TextView
 
     // for database
     private var endYear = 0
@@ -67,41 +67,41 @@ class CreateEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateEvent2Binding.bind(view)
 
-        startDateBtn = view.findViewById<ImageButton>(R.id.startDateCalendarBtn)
+        //startDateBtn = view.findViewById<ImageButton>(R.id.startDateCalendarBtn)
         endDateBtn = view.findViewById<ImageButton>(R.id.endDateCalendarBtn)
-        startTimeBtn = view.findViewById<ImageButton>(R.id.StartTimePickerBtn)
+        //startTimeBtn = view.findViewById<ImageButton>(R.id.StartTimePickerBtn)
         endTimeBtn = view.findViewById<ImageButton>(R.id.EndTimePickerBtn)
         createEventBtn = view.findViewById<Button>(R.id.create_button)
 
         eventName = view.findViewById<EditText>(R.id.editText)
         endTimeText = view.findViewById<TextView>(R.id.EndTimeEditText)
-        startTimeText = view.findViewById<TextView>(R.id.StartTimeEditText)
+        //startTimeText = view.findViewById<TextView>(R.id.StartTimeEditText)
         endDateText = view.findViewById<TextView>(R.id.endDateEditText)
-        startDateText = view.findViewById<TextView>(R.id.startDateEditText)
+        //startDateText = view.findViewById<TextView>(R.id.startDateEditText)
 
 
         _binding.apply {
-            startDateBtn?.setOnClickListener{
-                Log.println(Log.DEBUG, "CreateEventFragment", "In the onClickListener")
-                //DatePickerDialog().show()
-                val datePickerFragment = DatePickerFragment()
-                val supportFragmentManager = requireActivity().supportFragmentManager
-
-                datePickerFragment.show(supportFragmentManager, "datePicker")
-
-                //set Fragment result listener
-                supportFragmentManager?.setFragmentResultListener(
-                    "REQUEST_KEY",
-                    viewLifecycleOwner
-                ) {
-                        resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
-                            val date = bundle.getString("SELECTED_DATE")
-//                            val editText = view.findViewById<TextView>(R.id.startDateEditText)
-                            startDateText?.setText(date)
-
-                        }
-                }
-            }
+//            startDateBtn?.setOnClickListener{
+//                Log.println(Log.DEBUG, "CreateEventFragment", "In the onClickListener")
+//                //DatePickerDialog().show()
+//                val datePickerFragment = DatePickerFragment()
+//                val supportFragmentManager = requireActivity().supportFragmentManager
+//
+//                datePickerFragment.show(supportFragmentManager, "datePicker")
+//
+//                //set Fragment result listener
+//                supportFragmentManager?.setFragmentResultListener(
+//                    "REQUEST_KEY",
+//                    viewLifecycleOwner
+//                ) {
+//                        resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
+//                            val date = bundle.getString("SELECTED_DATE")
+////                            val editText = view.findViewById<TextView>(R.id.startDateEditText)
+//                            startDateText?.setText(date)
+//
+//                        }
+//                }
+//            }
 
             endDateBtn?.setOnClickListener{
                 Log.println(Log.DEBUG, "CreateEventFragment", "In the onClickListener")
@@ -129,25 +129,25 @@ class CreateEventFragment : Fragment() {
                 }
             }
 
-            startTimeBtn?.setOnClickListener{
-                val timePickerFragment = TimePickerFragment()
-                val supportFragmentManager = requireActivity().supportFragmentManager
-
-                timePickerFragment.show(supportFragmentManager, "timePicker")
-
-                //set Fragment result listener
-                supportFragmentManager.setFragmentResultListener(
-                    "REQUEST_KEY",
-                    viewLifecycleOwner
-                ) {
-                        resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
-                    val time = bundle.getString("SELECTED_TIME")
-                    //val editText = view.findViewById<TextView>(R.id.StartTimeEditText)
-                    startTimeText?.setText(time)
-
-                }
-                }
-            }
+//            startTimeBtn?.setOnClickListener{
+//                val timePickerFragment = TimePickerFragment()
+//                val supportFragmentManager = requireActivity().supportFragmentManager
+//
+//                timePickerFragment.show(supportFragmentManager, "timePicker")
+//
+//                //set Fragment result listener
+//                supportFragmentManager.setFragmentResultListener(
+//                    "REQUEST_KEY",
+//                    viewLifecycleOwner
+//                ) {
+//                        resultKey, bundle -> if (resultKey == "REQUEST_KEY"){
+//                    val time = bundle.getString("SELECTED_TIME")
+//                    //val editText = view.findViewById<TextView>(R.id.StartTimeEditText)
+//                    startTimeText?.setText(time)
+//
+//                }
+//                }
+//            }
 
             endTimeBtn?.setOnClickListener{
                 val timePickerFragment = TimePickerFragment()
@@ -175,27 +175,27 @@ class CreateEventFragment : Fragment() {
 
             createEventBtn.setOnClickListener{
                 val eventNameStr : String = eventName.text.toString().trim()
-                var startDateStr : String = startDateText.text.toString().trim()
+//                var startDateStr : String = startDateText.text.toString().trim()
                 var endDateStr : String = endDateText.text.toString().trim()
-                var startTimeStr: String = startTimeText.text.toString().trim()
+//                var startTimeStr: String = startTimeText.text.toString().trim()
                 var endTimeStr : String = endTimeText.text.toString().trim()
 
                 if (eventNameStr.isEmpty()){
                     eventName.error = "Event Name Required"
                     return@setOnClickListener
                 }
-                else if (startDateStr.isEmpty()){
-                    startDateStr = "Start Date Required"
-                    return@setOnClickListener
-                }
+//                else if (startDateStr.isEmpty()){
+//                    startDateStr = "Start Date Required"
+//                    return@setOnClickListener
+//                }
                 else if (endDateStr.isEmpty()){
                     endDateStr = "End Date Required"
                     return@setOnClickListener
                 }
-                else if (startTimeStr.isEmpty()){
-                    startTimeStr = "Start Time Required"
-                    return@setOnClickListener
-                }
+//                else if (startTimeStr.isEmpty()){
+//                    startTimeStr = "Start Time Required"
+//                    return@setOnClickListener
+//                }
                 else if (endTimeStr.isEmpty()){
                     endTimeStr = "End Time Required"
                     return@setOnClickListener
@@ -227,9 +227,9 @@ class CreateEventFragment : Fragment() {
                     val activeEvents = ActiveEvents()
                     activeEvents.addEvent(requireContext(), eventCode, eventNameStr, endTimestamp)
 
-                    Toast.makeText(context, "Event added successfully to DB", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "Event added successfully to DB", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
-                    Toast.makeText(context, "Failed to add event to DB", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "Failed to add event to DB", Toast.LENGTH_SHORT).show()
                 }
 
                 // write event into the active_events.json internal storage file
