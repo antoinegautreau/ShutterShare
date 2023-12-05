@@ -1,5 +1,4 @@
 # ShutterShare
-Overview Of Use & Purpose
 ShutterShare is a mobile app built in Android Studio using Kotlin. The purpose is to be able to take a photo during an event and share it with people where you can only view it once the event is over.
 The use of it is that you can add/create events(via event code) and then you can contribute to that event with your photos. 
 
